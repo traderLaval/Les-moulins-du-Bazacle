@@ -5,8 +5,6 @@ from selenium import webdriver  # Firefox/Gecko driver
 from openpyxl import load_workbook  # write xlsx file
 from datetime import datetime  # date management
 
-
-
 # --- DEFINE GLOBAL
 OK = 0
 NEW = 'n'
@@ -14,13 +12,11 @@ UPDATED = 'u'
 DELETED = 'd'
 EMPTY = ""
 equity_date_status_column_name = {'status': 'A', 'entry': 'B', 'out': 'C'}
-equity_list_column_name = {'country': 'D', 'name': 'E', 'sector': 'F', 'capi': 'G',
-						   '1st Jan': 'H', 'link': 'I', 'zb ref': 'J'}
+equity_list_column_name = {'country': 'D', 'name': 'E', 'sector': 'F', 'capi': 'G', '1st Jan': 'H', 'link': 'I', 'zb ref': 'J'}
 
 # Directory profile and firefox options
 profile_options = {
-	"--profile": "/home/mouac/workspace/Bourse/scraping/Firefox_solenium_profile",
-	"--headless": ""
+    "--profile": "/home/mouac/workspace/Bourse/pyProject/Les-moulins-du-Bazacle/data/scraping/Firefox_solenium_profile", "--headless": ""
 }
 # Dictionary of url to scrap
 url2scrap = {
@@ -135,13 +131,13 @@ def get_equity_style_invest(w, si, equity_list):
 #       worksheet ws: the sheet to read
 #     RETURN {} zonebourse reference (key) list with corresponding line number
 def read_zb_ref_xls_file(ws):
-	dico_zb_ref_file = {}
-	for i in range(ws.max_row-1):  # -1 because start directly from 2nd line
-		line = i+2  # sheet line start from 1 (+1) and we do not need the 1st linecolumn title (+1)
-		# Store the value (i.e. zb ref) as key and the corresponding cell number (ex: "A1")
-		zb_ref = ws[f'{equity_list_column_name["zb ref"]}{line}'].value
-		dico_zb_ref_file[zb_ref] = line
-	return(dico_zb_ref_file)
+    dico_zb_ref_file = {}
+    for i in range(ws.max_row-1):  # -1 because start directly from 2nd line
+        line = i+2  # sheet line start from 1 (+1) and we do not need the 1st linecolumn title (+1)
+        # Store the value (i.e. zb ref) as key and the corresponding cell number (ex: "A1")
+        zb_ref = ws[f'{equity_list_column_name["zb ref"]}{line}'].value
+        dico_zb_ref_file[zb_ref] = line
+    return dico_zb_ref_file
 
 # ---
 # FUNCTION write_zblist_xlsx ( [{}] nl, string sm, string fn):
@@ -312,3 +308,9 @@ def main_scraping(xls_file_2w):
 	zb_invest_style_scraping(driver, xls_file_2w)
 
 	driver.quit()
+
+
+
+if __name__ == '__main__':
+    print("START SCRAPING")
+    main_scraping("/home/mouac/workspace/Bourse/00_live_working/zb_invest_style.xlsx")
